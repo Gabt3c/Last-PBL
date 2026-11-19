@@ -22,6 +22,7 @@ public class SalaEstudo {
         return true; 
     }
 
+    //Liberar desde que não esteja livre
     public boolean liberar(String aluno) {
         if (getDisponivel() && !aluno.equals(null) || aluno != " "){
     return false;
