@@ -12,6 +12,15 @@ public class SalaEstudo {
         this.responsavel = "Nenhum";
     }
 
+    //Reserva de acordo com a disponibilidade
+    public boolean reservar(String aluno){
+        if (!getDisponivel() || aluno.equals(null) || aluno == " "){
+            return false;
+        }
+        this.setDisponivel(true);
+        return true; 
+    }
+
     public String getCodigo() {
         return codigo;
     }
@@ -26,10 +35,6 @@ public class SalaEstudo {
 
     public void setCapacidade(int capacidade) {
         this.capacidade = capacidade;
-    }
-
-    public boolean isDisponivel() {
-        return disponivel;
     }
 
     public boolean getDisponivel() {
