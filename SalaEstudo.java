@@ -18,6 +18,7 @@ public class SalaEstudo {
             return false;
         }
         this.setDisponivel(true);
+        this.setResponsavel(aluno);
         return true; 
     }
 
