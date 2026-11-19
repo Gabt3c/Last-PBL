@@ -14,13 +14,22 @@ public class SalaEstudo {
 
     //Reserva de acordo com a disponibilidade
     public boolean reservar(String aluno){
-        if (!getDisponivel() || aluno.equals(null) || aluno == " "){
+        if (!getDisponivel() && aluno.equals(null) || aluno == " "){
             return false;
         }
-        this.setDisponivel(true);
+        this.setDisponivel(false);
         this.setResponsavel(aluno);
         return true; 
     }
+
+    public boolean liberar(String aluno) {
+        if (getDisponivel() && !aluno.equals(null) || aluno != " "){
+    return false;
+        }
+        this.setDisponivel(true);
+        this.setResponsavel("Nenhum");
+        return true;
+}
 
     public String getCodigo() {
         return codigo;
