@@ -14,7 +14,7 @@ public class SalaEstudo {
 
     //Reserva de acordo com a disponibilidade
     public boolean reservar(String aluno){
-        if (!getDisponivel() && aluno.equals(null) || aluno == " "){
+        if (!isDisponivel() && aluno.equals(null) || aluno == " "){
             return false;
         }
         this.setDisponivel(false);
@@ -24,14 +24,14 @@ public class SalaEstudo {
 
     //Liberar desde que não esteja livre
     public boolean liberar(String aluno) {
-        if (getDisponivel() && !aluno.equals(null) || aluno != " "){
-    return false;
+        if (isDisponivel() == false && !aluno.equals(null) || aluno != " "){
+        disponivel = true;
         }
         this.setDisponivel(true);
         this.setResponsavel("Nenhum");
-        return true;
+        return false;
 }
-
+    //gets e setters
     public String getCodigo() {
         return codigo;
     }
@@ -48,8 +48,8 @@ public class SalaEstudo {
         this.capacidade = capacidade;
     }
 
-    public boolean getDisponivel() {
-        return disponivel;
+    public boolean isDisponivel() {
+    return disponivel;
     }
 
     public void setDisponivel(boolean disponivel) {
@@ -63,4 +63,5 @@ public class SalaEstudo {
     public void setResponsavel(String responsavel) {
         this.responsavel = responsavel;
     }
+    
 }
