@@ -2,79 +2,61 @@ import javax.swing.*;
 
 public class TelaReserva {
 
-     private JFrame janela;
-    private JPanel painel;
-    private SalaEstudo sala = new SalaEstudo("SALA-201", 6);
+    private final JFrame janela;
+    private final SalaEstudo sala = new SalaEstudo("SALA-201", 6);
+    private final JLabel labelSituacao = new JLabel();
+    private final JLabel labelReservas = new JLabel();
+    private final JTextField campoAluno = new JTextField(20);
+    private final JButton botaoReservar = new JButton("Reservar");
+    private final JButton botaoLiberar = new JButton("Liberar");
 
-
-    
     public TelaReserva() {
-        //Inicia a janela
         janela = new JFrame("Reserva de Sala de Estudo");
-        painel = new JPanel();
-        janela.add(painel);
-        janela.setSize(450, 250);
-        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        janela.setVisible(true);
-        //Adiciona a janela os itens abaixo
-        painel.add(labelAluno);
+        JPanel painel = new JPanel();
+        painel.add(new JLabel("Aluno:"));
         painel.add(campoAluno);
         painel.add(botaoReservar);
         painel.add(botaoLiberar);
         painel.add(labelSituacao);
+        painel.add(labelReservas);
+
+        botaoReservar.addActionListener(evento -> reservar());
+        botaoLiberar.addActionListener(evento -> liberar());
+
+        atualizarInterface();
+        janela.add(painel);
+        janela.setSize(450, 250);
+        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        janela.setVisible(true);
     }
 
-    //cria os componentes da janela
-    JLabel labelSituacao = new JLabel("Situação: disponível");
-    JLabel labelAluno = new JLabel("Aluno:");
-    JTextField campoAluno = new JTextField(20);
+    // Mostra o resultado retornado pela regra de negócio.
+    private void reservar() {
+        boolean sucesso = sala.reservar(campoAluno.getText());
+        atualizarInterface();
+        JOptionPane.showMessageDialog(janela, sucesso
+                ? "Sala reservada com sucesso!"
+                : "Informe o nome do aluno para reservar.");
+    }
 
-    //metodo para atualizar a interface
+    private void liberar() {
+        boolean sucesso = sala.liberar(campoAluno.getText());
+        atualizarInterface();
+        JOptionPane.showMessageDialog(janela, sucesso
+                ? "Sala liberada com sucesso!"
+                : "A sala já está liberada.");
+    }
+
+    // Sincroniza o rótulo do contador e os botões com o estado da sala.
     private void atualizarInterface() {
-    if (sala.isDisponivel() == true) {
-        labelSituacao.setText("Situação: disponível" );
-    } 
-    else {
-        labelSituacao.setText("Reservada por: "+ sala.getResponsavel()
-        );
-    }
-}
-    //botoes (CARALHO Q BGLH CHATO DOS INFERNOS)
+        if (sala.isDisponivel()) {
+            labelSituacao.setText("Situação: disponível");
+        } else {
+            labelSituacao.setText("Reservada por: " + sala.getResponsavel());
+        }
 
-    JButton botaoReservar = new JButton("Reservar");{
-    //logica do botao
-    botaoReservar.addActionListener(evento -> {
-    String aluno = campoAluno.getText();
-    boolean sucesso = sala.isDisponivel();
-    if (sucesso == true) {
-    JOptionPane.showMessageDialog(janela,"Sala reservada com sucesso!");
-    sala.reservar(aluno);
-    } 
-
-    else {
-    JOptionPane.showMessageDialog(janela,"Não foi possível realizar a reserva.");
-    }
-    
-    atualizarInterface();
-        });
-    }
-
-    JButton botaoLiberar = new JButton("Liberar");{
-    //logica do botao
-    botaoLiberar.addActionListener(evento -> {
-    String aluno = campoAluno.getText();
-    boolean sucesso = sala.isDisponivel();
-    if (sucesso == false) {
-    JOptionPane.showMessageDialog(janela,"Sala liberada com sucesso!");
-    sala.liberar(aluno);
-    } 
-
-    else {
-    JOptionPane.showMessageDialog(janela,"A sala ja esta liberada");
-    }
-    
-    atualizarInterface();
-        });
-
+        labelReservas.setText("Reservas realizadas: " + sala.getReservasRealizadas());
+        botaoReservar.setEnabled(sala.isDisponivel());
+        botaoLiberar.setEnabled(!sala.isDisponivel());
     }
 }
