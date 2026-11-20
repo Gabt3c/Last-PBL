@@ -4,6 +4,7 @@ public class SalaEstudo {
     private int capacidade;
     private boolean disponivel;
     private String responsavel;
+    private int reservasRealizadas;
 
     public SalaEstudo(String codigo, int capacidade) {
         this.codigo = codigo;
@@ -12,25 +13,30 @@ public class SalaEstudo {
         this.responsavel = "Nenhum";
     }
 
-    //Reserva de acordo com a disponibilidade
-    public boolean reservar(String aluno){
-        if (!isDisponivel() && aluno.equals(null) || aluno == " "){
+    // Registra a reserva e incrementa o contador após validar a operação.
+    public boolean reservar(String aluno) {
+        if (!isDisponivel() || aluno == null || aluno.isBlank()) {
             return false;
         }
         this.setDisponivel(false);
         this.setResponsavel(aluno);
-        return true; 
+        reservasRealizadas++;
+        return true;
     }
 
-    //Liberar desde que não esteja livre
+    // Libera uma sala ocupada e preserva o histórico de reservas.
     public boolean liberar(String aluno) {
-        if (isDisponivel() == false && !aluno.equals(null) || aluno != " "){
-        disponivel = true;
+        if (isDisponivel()) {
+            return false;
         }
         this.setDisponivel(true);
         this.setResponsavel("Nenhum");
-        return false;
-}
+        return true;
+    }
+
+    public int getReservasRealizadas() {
+        return reservasRealizadas;
+    }
     //gets e setters
     public String getCodigo() {
         return codigo;
